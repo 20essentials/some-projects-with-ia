@@ -1,7 +1,6 @@
 'use client';
 
-import { useActionState } from 'react';
-import { actionSubmit } from '../actions';
+import { useState, useRef } from 'react';
 import { formEntityType, inputID } from '../utils/consts';
 
 const INITIAL_STATE: formEntityType = {
@@ -26,18 +25,58 @@ const styles = {
 };
 
 export function Menu() {
-  const [currentState, formAction, isPending] = useActionState(
-    actionSubmit,
-    INITIAL_STATE
-  );
+  const [question, setQuestion] = useState(INITIAL_STATE.question);
+  const [response, setResponse] = useState(INITIAL_STATE.response);
+  const [isPending, setIsPending] = useState(false);
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setResponse('');
+    setIsPending(true);
+
+    try {
+      const res = await fetch('/1/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [{ role: 'user', content: question }] })
+      });
+
+      if (!res.body) throw new Error('No response body');
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        if (chunk) {
+          setResponse((prev) => prev + chunk);
+
+          if (textareaRef.current) {
+            textareaRef.current.scrollTop = textareaRef.current.scrollHeight;
+          }
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      setResponse((prev) => prev + '\n[Error streaming response]');
+    } finally {
+      setIsPending(false);
+    }
+  };
 
   return (
     <div className={styles.overlay}>
-      <form action={formAction} className={styles.form}>
+      <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.header}>
           <h2 className={styles.title}>Chat With Groq</h2>
-          <p className={styles.description}>Make questions baby!</p>
+          <p className={styles.description}>Ask anything and get streaming answers!</p>
         </div>
+
         <div className={styles.fieldsWrapper}>
           <div className={styles.field}>
             <label htmlFor={inputID.question} className={styles.label}>
@@ -46,29 +85,44 @@ export function Menu() {
             <input
               id={inputID.question}
               name={inputID.question}
-              defaultValue={currentState.question}
-              placeholder="Do Fibonacci in JavaScript"
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder="Type your question here..."
               className={styles.input}
+              disabled={isPending}
             />
           </div>
+
           <div className={styles.field}>
             <label htmlFor={inputID.response} className={styles.label}>
               Response
             </label>
             <textarea
+              ref={textareaRef}
               id={inputID.response}
               name={inputID.response}
-              defaultValue={currentState.response}
-              placeholder="..."
-              rows={4}
+              value={response}
+              readOnly
+              placeholder="Streaming response will appear here..."
+              rows={8}
               className={styles.textarea}
             />
           </div>
         </div>
+
         <div className={styles.footer}>
-          <button type="reset" className={styles.cancelButton}>
+          <button
+            type="reset"
+            className={styles.cancelButton}
+            onClick={() => {
+              setQuestion('');
+              setResponse('');
+            }}
+            disabled={isPending}
+          >
             Cancel
           </button>
+
           <button type="submit" disabled={isPending} className={styles.submitButton}>
             {isPending ? 'Sending...' : 'Send'}
           </button>
