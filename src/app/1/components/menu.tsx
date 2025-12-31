@@ -1,5 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+
 import {
   Dialog,
   DialogClose,
@@ -18,21 +20,29 @@ export function Menu() {
       <form>
         <DialogContent className='max-w-106.25'>
           <DialogHeader>
-            <DialogTitle>Edit profile</DialogTitle>
-            <DialogDescription>
-              Make changes to your profile here. Click save when you&apos;re done.
-            </DialogDescription>
+            <DialogTitle>Chat With Groq</DialogTitle>
+            <DialogDescription>Make Questinons Baby!</DialogDescription>
           </DialogHeader>
 
           <div className='grid gap-4'>
             <div className='grid gap-3'>
-              <Label htmlFor='name-1'>Name</Label>
-              <Input id='name-1' defaultValue='Pedro Duarte' />
+              <Label htmlFor='name-1'>Question</Label>
+              <Input
+                id='name-1'
+                defaultValue=''
+                placeholder='Do Fibonacci in JavaScript'
+              />
             </div>
 
             <div className='grid gap-3'>
-              <Label htmlFor='username-1'>Username</Label>
-              <Input id='username-1' defaultValue='@peduarte' />
+              <Label htmlFor='username-1'>Response</Label>
+              {/* <Input className='field-sizing-content' id='username-1' defaultValue='' placeholder='...' /> */}
+              <Textarea
+                id='username-1'
+                className='field-sizing-content resize-none'
+                defaultValue=''
+                placeholder='...'
+              />
             </div>
           </div>
 
@@ -40,7 +50,7 @@ export function Menu() {
             <DialogClose asChild>
               <Button variant='outline'>Cancel</Button>
             </DialogClose>
-            <Button type='submit'>Save changes</Button>
+            <Button type='submit'>Send</Button>
           </DialogFooter>
         </DialogContent>
       </form>
