@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { inputID } from '../utils/consts';
 
 export function Menu() {
   return (
@@ -26,19 +27,20 @@ export function Menu() {
 
           <div className='grid gap-4'>
             <div className='grid gap-3'>
-              <Label htmlFor='name-1'>Question</Label>
+              <Label htmlFor={inputID.question}>Question</Label>
               <Input
-                id='name-1'
+                id={inputID.question}
+                name={inputID.question}
                 defaultValue=''
                 placeholder='Do Fibonacci in JavaScript'
               />
             </div>
 
             <div className='grid gap-3'>
-              <Label htmlFor='username-1'>Response</Label>
-              {/* <Input className='field-sizing-content' id='username-1' defaultValue='' placeholder='...' /> */}
+              <Label htmlFor={inputID.response}>Response</Label>
               <Textarea
-                id='username-1'
+                id={inputID.response}
+                name={inputID.response}
                 className='field-sizing-content resize-none'
                 defaultValue=''
                 placeholder='...'
