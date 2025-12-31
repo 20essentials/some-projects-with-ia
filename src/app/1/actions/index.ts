@@ -12,7 +12,7 @@ export async function actionSubmit(
   };
 
   console.log({ newData });
-  if (!newData.question || !newData.response) return { ...prevState };
+  if (!newData.question || !newData.response) return { ...newData };
 
   return { ...newData };
 }
