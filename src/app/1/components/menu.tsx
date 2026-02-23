@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { API_URL, formEntityType, inputID } from '../utils/consts';
+import { Streamdown } from 'streamdown';
 
 const INITIAL_STATE: formEntityType = {
   question: '',
@@ -18,7 +19,7 @@ const styles = {
   field: `space-y-2`,
   label: `text-sm font-medium`,
   input: `w-full rounded-md border px-3 py-2 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20`,
-  textarea: `w-full resize-none rounded-md border px-3 py-2 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20`,
+  responseWrapper: `w-full rounded-md border px-3 py-2 text-sm bg-background max-h-60 overflow-y-auto relative`,
   footer: `mt-6 flex justify-end gap-2`,
   cancelButton: `rounded-md border px-4 py-2 text-sm hover:bg-muted`,
   submitButton: `rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50`
@@ -28,8 +29,6 @@ export function Menu() {
   const [question, setQuestion] = useState(INITIAL_STATE.question);
   const [response, setResponse] = useState(INITIAL_STATE.response);
   const [isPending, setIsPending] = useState(false);
-
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,15 +54,11 @@ export function Menu() {
         const chunk = decoder.decode(value, { stream: true });
         if (chunk) {
           setResponse(prev => prev + chunk);
-
-          if (textareaRef.current) {
-            textareaRef.current.scrollTop = textareaRef.current.scrollHeight;
-          }
         }
       }
     } catch (err) {
       console.error(err);
-      setResponse(prev => prev + '\n[Error streaming response]');
+      setResponse(prev => prev + '\n\n⚠️ Error streaming response');
     } finally {
       setIsPending(false);
     }
@@ -99,16 +94,12 @@ export function Menu() {
             <label htmlFor={inputID.response} className={styles.label}>
               Response
             </label>
-            <textarea
-              ref={textareaRef}
-              id={inputID.response}
-              name={inputID.response}
-              value={response}
-              readOnly
-              placeholder='Streaming response will appear here...'
-              rows={8}
-              className={styles.textarea}
-            />
+
+            <div className={styles.responseWrapper}>
+              <Streamdown isAnimating={isPending}>
+                {response || 'Streaming response will appear here...'}
+              </Streamdown>
+            </div>
           </div>
         </div>
 
