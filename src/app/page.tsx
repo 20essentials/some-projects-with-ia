@@ -4,7 +4,7 @@ import Link from 'next/link';
 const arrayOfProjecst = [{ label: 'GroqService + CerebraService' }];
 
 export default function Page() {
-  redirect('/1');
+  redirect('/2');
   return (
     <>
       {arrayOfProjecst.map(({ label }, i) => (

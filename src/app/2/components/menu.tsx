@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { API_URL, formEntityType, inputID } from '../utils/consts';
+import { API_URL, CONFIG, formEntityType, inputID } from '../utils/consts';
 
 const INITIAL_STATE: formEntityType = {
   question: '',
@@ -9,8 +9,8 @@ const INITIAL_STATE: formEntityType = {
 };
 
 const styles = {
-  overlay: `fixed inset-0 flex items-center justify-center bg-black/40`,
-  form: `w-full max-w-lg rounded-lg border bg-background p-6 shadow-lg`,
+  overlay: `fixed inset-0 flex items-center justify-center bg-black/20`,
+  form: `w-full max-w-lg rounded-lg border bg-background/95 p-6 shadow-lg`,
   header: `mb-6 space-y-1`,
   title: `text-lg font-semibold`,
   description: `text-sm text-muted-foreground`,
@@ -73,7 +73,7 @@ export function Menu() {
     <div className={styles.overlay}>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.header}>
-          <h2 className={styles.title}>Chat With Groq</h2>
+          <h2 className={styles.title}>Chat With {CONFIG.MODEL_AI}</h2>
           <p className={styles.description}>
             Ask anything and get streaming answers!
           </p>

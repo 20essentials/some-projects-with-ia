@@ -1,11 +1,9 @@
 export function Background() {
   return (
-    <video
+    <img
       className='fixed w-full h-screen -z-10 object-cover'
-      src='/assets/background-example-1.mp4'
-      autoPlay
-      muted
-      loop
-    ></video>
+      src='/assets/bg2.svg'
+      alt="Just The Background Baby"
+    />
   );
 }
