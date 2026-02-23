@@ -1,7 +1,13 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { API_URL, CONFIG, formEntityType, inputID } from '../utils/consts';
+import {
+  API_URL,
+  CONFIG,
+  formEntityType,
+  inputID,
+  IS_THIS_PROYECTS_DESACTIVE
+} from '../utils/consts';
 
 const INITIAL_STATE: formEntityType = {
   question: '',
@@ -43,6 +49,10 @@ export function Menu() {
         body: JSON.stringify({ messages: [{ role: 'user', content: question }] })
       });
 
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(errorText || `Request failed: ${res.status}`);
+      }
       if (!res.body) throw new Error('No response body');
 
       const reader = res.body.getReader();
@@ -99,6 +109,14 @@ export function Menu() {
             <label htmlFor={inputID.response} className={styles.label}>
               Response
             </label>
+
+            {IS_THIS_PROYECTS_DESACTIVE && (
+              <p className=''>
+                {
+                  'This project is desactived, because the Vercel API Gateway Requires Money 🐼, but you can see the code in the repo.'
+                }
+              </p>
+            )}
             <textarea
               ref={textareaRef}
               id={inputID.response}
@@ -126,7 +144,7 @@ export function Menu() {
           </button>
           <button
             type='submit'
-            disabled={isPending}
+            disabled={isPending || IS_THIS_PROYECTS_DESACTIVE}
             className={styles.submitButton}
           >
             {isPending ? 'Sending...' : 'Send'}

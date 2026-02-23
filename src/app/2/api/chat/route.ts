@@ -1,27 +1,44 @@
 import { streamText } from 'ai';
-import rateLimit from 'express-rate-limit';
 import { NextResponse, type NextRequest } from 'next/server';
 import { CONFIG } from '@/app/2/utils/consts';
-const aiRateLimiter = rateLimit({
-  windowMs: 60 * 1000, // -> 1 minuto
-  limit: 5, // -> 5 peticiones por IP por minuto
-  message: {
-    error: 'Demasiadas solicitudes, por favor intenta de nuevo más tarde.'
-  },
-  legacyHeaders: false,
-  standardHeaders: 'draft-8' // devuelve headers estándard RateLimit-*
-});
-
-/* 
-// TODO:
-export const aiRouter = Router()
-aiRouter.use(aiRateLimiter) 
-
-*/
+import { ChatMessage } from '../../utils/types';
 
 export async function POST(req: NextRequest) {
-  const data = req.body;
-  console.log(data);
+  try {
+    const { messages } = (await req.json()) as {
+      messages: ChatMessage[];
+    };
 
-  return NextResponse.json(data);
+    if (!messages?.length) {
+      return NextResponse.json(
+        { error: 'No messages provided' },
+        { status: 400 }
+      );
+    }
+
+    const prompt = [
+      `Eres un asistente que responde preguntas de manera graciosa, ingeniosa y con muchos emojis 😄✨.`,
+      `Tu objetivo es entretener mientras das información útil y clara.`,
+      `Evita cualquier explicación técnica innecesaria o comentarios fuera de la respuesta.`,
+      `Responde siempre directamente a la pregunta del usuario.`,
+      `Usa un tono divertido, cercano y ligero en español.`,
+      `Incluye emojis relevantes en cada respuesta.`,
+      `Si la pregunta es seria, responde con respeto pero manteniendo un toque simpático 🙂.`,
+      ``,
+      `Pregunta:`,
+      messages.map(m => m.content).join('\n')
+    ].join('\n');
+
+    const result =  streamText({
+      model: CONFIG.MODEL_AI,
+      prompt
+    });
+
+    return result.toTextStreamResponse();
+  } catch {
+    return NextResponse.json(
+      { error: 'Error generating response' },
+      { status: 500 }
+    );
+  }
 }
