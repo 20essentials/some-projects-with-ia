@@ -3,6 +3,12 @@
 import { useState } from 'react';
 import { API_URL, formEntityType, inputID } from '../utils/consts';
 import { Streamdown } from 'streamdown';
+import { code } from '@streamdown/code';
+import { mermaid } from '@streamdown/mermaid';
+import { math } from '@streamdown/math';
+import { cjk } from '@streamdown/cjk';
+import 'katex/dist/katex.min.css';
+import 'prismjs/themes/prism-tomorrow.css';
 
 const INITIAL_STATE: formEntityType = {
   question: '',
@@ -94,12 +100,16 @@ export function Menu() {
             <label htmlFor={inputID.response} className={styles.label}>
               Response
             </label>
+          </div>
 
-            <div className={styles.responseWrapper}>
-              <Streamdown isAnimating={isPending}>
-                {response || 'Streaming response will appear here...'}
-              </Streamdown>
-            </div>
+          <div className={styles.responseWrapper}>
+            <Streamdown
+              plugins={{ code, mermaid, math, cjk }}
+              isAnimating={isPending}
+              className='prose prose-sm text-sm overflow-x-auto'
+            >
+              {response || 'Streaming response will appear here...'}
+            </Streamdown>
           </div>
         </div>
 
