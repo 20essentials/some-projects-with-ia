@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { formEntityType, inputID } from '../utils/consts';
+import { API_URL, formEntityType, inputID } from '../utils/consts';
 
 const INITIAL_STATE: formEntityType = {
   question: '',
@@ -37,7 +37,7 @@ export function Menu() {
     setIsPending(true);
 
     try {
-      const res = await fetch('/1/api/chat', {
+      const res = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: [{ role: 'user', content: question }] })
@@ -54,7 +54,7 @@ export function Menu() {
 
         const chunk = decoder.decode(value, { stream: true });
         if (chunk) {
-          setResponse((prev) => prev + chunk);
+          setResponse(prev => prev + chunk);
 
           if (textareaRef.current) {
             textareaRef.current.scrollTop = textareaRef.current.scrollHeight;
@@ -63,7 +63,7 @@ export function Menu() {
       }
     } catch (err) {
       console.error(err);
-      setResponse((prev) => prev + '\n[Error streaming response]');
+      setResponse(prev => prev + '\n[Error streaming response]');
     } finally {
       setIsPending(false);
     }
@@ -74,7 +74,9 @@ export function Menu() {
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.header}>
           <h2 className={styles.title}>Chat With Groq</h2>
-          <p className={styles.description}>Ask anything and get streaming answers!</p>
+          <p className={styles.description}>
+            Ask anything and get streaming answers!
+          </p>
         </div>
 
         <div className={styles.fieldsWrapper}>
@@ -86,8 +88,8 @@ export function Menu() {
               id={inputID.question}
               name={inputID.question}
               value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              placeholder="Type your question here..."
+              onChange={e => setQuestion(e.target.value)}
+              placeholder='Type your question here...'
               className={styles.input}
               disabled={isPending}
             />
@@ -103,7 +105,7 @@ export function Menu() {
               name={inputID.response}
               value={response}
               readOnly
-              placeholder="Streaming response will appear here..."
+              placeholder='Streaming response will appear here...'
               rows={8}
               className={styles.textarea}
             />
@@ -112,7 +114,7 @@ export function Menu() {
 
         <div className={styles.footer}>
           <button
-            type="reset"
+            type='reset'
             className={styles.cancelButton}
             onClick={() => {
               setQuestion('');
@@ -122,7 +124,11 @@ export function Menu() {
           >
             Cancel
           </button>
-          <button type="submit" disabled={isPending} className={styles.submitButton}>
+          <button
+            type='submit'
+            disabled={isPending}
+            className={styles.submitButton}
+          >
             {isPending ? 'Sending...' : 'Send'}
           </button>
         </div>
