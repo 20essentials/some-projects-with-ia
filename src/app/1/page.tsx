@@ -3,7 +3,7 @@ import { Background } from './components/background';
 import { Menu } from './components/menu';
 
 export const metadata: Metadata = {
-  title: 'GroqService + CerebraService'
+  title: 'Groq + StreamDown'
 };
 
 export default function Page() {

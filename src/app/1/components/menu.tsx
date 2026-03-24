@@ -16,19 +16,19 @@ const INITIAL_STATE: formEntityType = {
 };
 
 const styles = {
-  overlay: `fixed inset-0 flex items-center justify-center bg-black/40`,
-  form: `w-full max-w-lg rounded-lg border bg-background p-6 shadow-lg`,
-  header: `mb-6 space-y-1`,
-  title: `text-lg font-semibold`,
-  description: `text-sm text-muted-foreground`,
-  fieldsWrapper: `space-y-4`,
-  field: `space-y-2`,
-  label: `text-sm font-medium`,
-  input: `w-full rounded-md border px-3 py-2 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20`,
-  responseWrapper: `w-full rounded-md border px-3 py-2 text-sm bg-background max-h-60 overflow-y-auto relative`,
-  footer: `mt-6 flex justify-end gap-2`,
-  cancelButton: `rounded-md border px-4 py-2 text-sm hover:bg-muted`,
-  submitButton: `rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50`
+  overlay: `fixed inset-0 flex items-center justify-center bg-black/10 select-none`,
+  form: `w-full max-w-lg rounded-lg border bg-background p-6 shadow-lg select-none`,
+  header: `mb-6 space-y-1 select-none`,
+  title: `text-lg font-semibold select-none`,
+  description: `text-sm text-muted-foreground select-none`,
+  fieldsWrapper: `space-y-4 select-none`,
+  field: `space-y-2 select-none`,
+  label: `text-sm font-medium select-none`,
+  input: `w-full rounded-md border px-3 py-2 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 select-text`,
+  responseWrapper: `w-full rounded-md border px-3 py-2 text-sm bg-background max-h-60 overflow-y-auto relative select-text`,
+  footer: `mt-6 flex justify-end gap-2 select-none`,
+  cancelButton: `rounded-md border px-4 py-2 text-sm hover:bg-muted select-none`,
+  submitButton: `rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 select-none`
 };
 
 export function Menu() {
