@@ -89,6 +89,7 @@ export function Menu() {
               id={inputID.question}
               name={inputID.question}
               value={question}
+              spellCheck="false"
               onChange={e => setQuestion(e.target.value)}
               placeholder='Type your question here...'
               className={styles.input}
