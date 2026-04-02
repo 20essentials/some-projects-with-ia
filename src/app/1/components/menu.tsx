@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { API_URL, formEntityType, inputID } from '../utils/consts';
+import { API_URL, formEntityType, inputID, MODEL_NAME } from '../utils/consts';
 import { Streamdown } from 'streamdown';
 import { code } from '@streamdown/code';
 import { mermaid } from '@streamdown/mermaid';
@@ -74,7 +74,7 @@ export function Menu() {
     <div className={styles.overlay}>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.header}>
-          <h2 className={styles.title}>Chat With Groq</h2>
+          <h2 className={styles.title}>Chat With Grok - Model {MODEL_NAME}</h2>
           <p className={styles.description}>
             Ask anything and get streaming answers!
           </p>

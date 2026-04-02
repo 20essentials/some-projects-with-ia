@@ -1,6 +1,7 @@
 /* pnpm add groq-sdk */
 import { Groq } from 'groq-sdk';
 import type { AIService, ChatMessage } from '@/app/1/utils/types';
+import { MODEL_NAME } from '../utils/consts';
 
 const groq = new Groq();
 
@@ -9,7 +10,7 @@ export const groqService: AIService = {
   async chat(messages: ChatMessage[]) {
     const chatCompletion = await groq.chat.completions.create({
       messages,
-      model: 'moonshotai/kimi-k2-instruct-0905',
+      model: MODEL_NAME,
       temperature: 0.6,
       max_completion_tokens: 4096,
       top_p: 1,

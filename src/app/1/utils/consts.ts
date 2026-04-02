@@ -9,3 +9,5 @@ export const inputID = {
 };
 
 export const API_URL = '/1/api/chat';
+
+export const MODEL_NAME = 'openai/gpt-oss-120b';
