@@ -124,3 +124,8 @@
   }
 }
 
+@media (width <= 1111px) {
+  .am-the-form-1 {
+    zoom: 0.9;
+  }
+}

@@ -17,7 +17,7 @@ const INITIAL_STATE: formEntityType = {
 
 const styles = {
   overlay: `fixed inset-0 flex items-center justify-center bg-black/10 select-none`,
-  form: `w-full max-w-lg rounded-lg border bg-background p-6 shadow-lg select-none`,
+  form: `w-full max-w-lg rounded-lg border bg-background p-6 shadow-lg select-none am-the-form-1`,
   header: `mb-6 space-y-1 select-none`,
   title: `text-lg font-semibold select-none`,
   description: `text-sm text-muted-foreground select-none`,
