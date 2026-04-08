@@ -128,7 +128,7 @@ export function Menu() {
           </button>
           <button
             type='submit'
-            disabled={isPending}
+            disabled={(isPending || question.length === 0)}
             className={styles.submitButton}
           >
             {isPending ? 'Sending...' : 'Send'}
